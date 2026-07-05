@@ -33,5 +33,10 @@ build_pathfinder:				## Builds the Pathfinder binary
 	@mv -f $(BUILD_OUTPUT_FILE) $(BUILD_DST_FILE)
 	$(call successful)
 
+clean:							## Cleans all output artifacts
+	$(call start_step_message,"Cleaning Build Artifacts")
+	@rm -rf $(BUILD_DST_DIR) $(CURRENT_DIR)/target
+	$(call successful)
+
 help:							## Displays available make targets
 	@egrep -h '\s##\s' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "$(BLUE)  %-30s$(RESET) %s\n", $$1, $$2}'
