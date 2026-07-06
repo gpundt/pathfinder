@@ -1,3 +1,5 @@
+use std::str;
+
 use clap::Parser;
 use log::{LevelFilter, debug, error, info, trace, warn};
 
@@ -23,7 +25,18 @@ struct Args {
 fn main() {
     let args: Args = Args::parse();
 
-    let log_level: LevelFilter = if args.verbose {
+    _set_log_level(args.verbose);
+
+    info!("{:<10}{}", "URL:", args.url);
+    info!("{:<10}{} sec", "Timeout:", args.timeout);
+    debug!("{:<10}{}", "Verbose:", args.verbose);
+}
+
+/// Helper function to set program's log level
+/// 
+/// verbose - User-provided verbose argument
+fn _set_log_level(verbose: bool) {
+    let log_level: LevelFilter = if verbose {
         LevelFilter::Debug
     } else {
         LevelFilter::Info
@@ -32,7 +45,5 @@ fn main() {
         .filter_level(log_level)
         .init();
 
-    info!("{:<10}{}", "URL:", args.url);
-    info!("{:<10}{}", "Timeout:", args.timeout);
-    debug!("{:<10}{}", "Verbose:", args.verbose);
+    ()
 }
