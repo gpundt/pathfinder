@@ -1,10 +1,8 @@
-mod arguments;
-mod logging;
+mod core;
 
 use clap::Parser;
+use core::{arguments::Args, logging};
 use log::{debug, error, info, trace, warn};
-
-use arguments::Args;
 
 fn main() {
     let args: Args = Args::parse();
