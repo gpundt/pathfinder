@@ -1,8 +1,10 @@
-SHELL := /bin/bash
+SHELL := /usr/bin/zsh
 CURRENT_DIR := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
 BUILD_OUTPUT_FILE := $(CURRENT_DIR)target/debug/pathfinder
-BUILD_DST_DIR := $(CURRENT_DIR)build/
-BUILD_DST_FILE ?= $(BUILD_DST_DIR)pathfinder
+BUILD_DST_FILE := /usr/bin/pathfinder
+
+PATHFINDER_ETC_DIR := /etc/pathfinder
+ULTIMATE_DISCOVERY :=$(CURRENT_DIR)deps/ultimate_discovery/ultimate-discovery.txt
 
 ## Colors ##
 RED     := \033[0;31m
@@ -24,18 +26,20 @@ endef
 all: prep_dirs build_pathfinder
 
 prep_dirs:
-	@mkdir -p $(BUILD_DST_DIR)
-	@rm -rf $(BUILD_DST_FILE)
+	@sudo mkdir -p $(PATHFINDER_ETC_DIR)/wordlists
+	@sudo cp $(ULTIMATE_DISCOVERY) $(PATHFINDER_ETC_DIR)/wordlists/
+	@sudo rm -rf $(BUILD_DST_FILE)
 
 build_pathfinder:				## Builds the Pathfinder binary
 	$(call start_step_message,"Building '$(BUILD_DST_FILE)'")
 	@cargo build
-	@mv -f $(BUILD_OUTPUT_FILE) $(BUILD_DST_FILE)
+	@sudo mv -f $(BUILD_OUTPUT_FILE) $(BUILD_DST_FILE)
+	@rehash
 	$(call successful)
 
 clean:							## Cleans all output artifacts
 	$(call start_step_message,"Cleaning Build Artifacts")
-	@rm -rf $(BUILD_DST_DIR) $(CURRENT_DIR)/target
+	@rm -rf $(CURRENT_DIR)/target $(BUILD_DST_FILE)
 	$(call successful)
 
 help:							## Displays available make targets

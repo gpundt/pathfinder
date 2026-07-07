@@ -1,0 +1,3 @@
+[submodule "ultimate_discovery"]
+	path = deps/ultimate_discovery
+	url = git@github.com:ViktorMares/ultimate_discovery.git

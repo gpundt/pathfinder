@@ -15,6 +15,11 @@ pub struct Args {
     #[arg(short, long, default_value_t = 1)]
     pub timeout: u8,
 
+    /// Filepath of word list to use for page crawl
+    #[arg(short, long)]
+    #[arg(default_value_t = String::from("/etc/pathfinder/wordlists/ultimate-discovery.txt"))]
+    pub wordlist: String,
+
     /// Turn on debug strings
     #[arg(short, long, default_value_t = false)]
     pub verbose: bool,

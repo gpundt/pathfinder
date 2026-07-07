@@ -20,17 +20,26 @@ fn main() {
         }
     };
 
-    info!("{:<10}{}", "URL:", root_url);
-    info!("{:<10}{} sec", "Timeout:", args.timeout);
-    debug!("{:<10}{}", "Verbose:", args.verbose);
+    info!("{:<20}{}", "URL:", root_url);
+    info!("{:<20}{} sec", "Timeout:", args.timeout);
+    info!("{:<20}{}", "Word List:", args.wordlist);
+    debug!("{:<20}{}", "Verbose:", args.verbose);
 
     match connectivity_check::validate(&root_url) {
-        Ok(_) => info!("Successfully connected to {}", root_url),
+        Ok(_) => info!("Successfully connected to '{}'", root_url),
         Err(err) => {
             error!("{}", err);
             exit(1);
         }
     }
 
-    let _ = directory_crawl::directory_crawl(&root_url);
+    let word_list: Vec<String> = match directory_crawl::parse_word_list(&args.wordlist) {
+        Ok(wordlist) => wordlist,
+        Err(e) => {
+            error!("Failed to generate wordlist: {}", e);
+            exit(1);
+        }
+    };
+
+    let _ = directory_crawl::directory_crawl(&root_url, word_list);
 }
