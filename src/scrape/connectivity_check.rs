@@ -14,7 +14,7 @@ pub fn validate(url: &str) -> Result<(), String> {
         },
         Err(err) => {
             if err.is_timeout() {
-                return Err(format!("Timeout reached"));
+                return Err(format!("Failed to connect: timeout reached"));
             } else if err.is_connect() {
                 return Err(format!("Failed to connect to {}", url));
             } else {
