@@ -5,6 +5,7 @@ use clap::Parser;
 use core::{arguments::Args, logging};
 use log::{debug, error, info, trace, warn};
 use scrape::connectivity_check;
+use std::process::exit;
 
 fn main() {
     let args: Args = Args::parse();
@@ -15,7 +16,11 @@ fn main() {
     info!("{:<10}{} sec", "Timeout:", args.timeout);
     debug!("{:<10}{}", "Verbose:", args.verbose);
 
-    if !connectivity_check::validate(&args.url) {
-        error!("Failed to connect to {}", args.url);
+    match connectivity_check::validate(&args.url) {
+        Ok(_) => info!("Successfully connected to {}", args.url),
+        Err(err) => {
+            error!("{}", err);
+            exit(1);
+        }
     }
 }
