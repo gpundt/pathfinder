@@ -812,6 +812,7 @@ dependencies = [
  "env_logger",
  "log",
  "reqwest",
+ "url",
 ]
 
 [[package]]
