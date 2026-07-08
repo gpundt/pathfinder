@@ -1,10 +1,8 @@
 use super::connectivity_check;
-use log::{debug, error, info, trace, warn};
+use log::info;
 use rayon::prelude::*;
 use std::fs::File;
 use std::io::{BufRead, BufReader};
-
-const MAX_CONCURRENT_REQUESTS: usize = 5;
 
 /// Given a filepath, parse each line and populate wordlist Vec<String>
 pub fn parse_word_list(filepath: &String) -> Result<Vec<String>, String> {

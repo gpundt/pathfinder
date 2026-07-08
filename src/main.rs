@@ -3,7 +3,7 @@ mod scrape;
 
 use clap::Parser;
 use core::{arguments::Args, logging, parse};
-use log::{debug, error, info, trace, warn};
+use log::{debug, error, info};
 use scrape::{connectivity_check, directory_crawl};
 use std::process::exit;
 
@@ -21,7 +21,6 @@ fn main() {
     };
 
     info!("{:<20}{}", "URL:", root_url);
-    info!("{:<20}{} sec", "Timeout:", args.timeout);
     info!("{:<20}{}", "Word List:", args.wordlist);
     debug!("{:<20}{}", "Verbose:", args.verbose);
 
