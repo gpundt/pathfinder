@@ -1,5 +1,6 @@
 use super::connectivity_check;
 use log::{debug, error, info, trace, warn};
+use rayon::prelude::*;
 use std::fs::File;
 use std::io::{BufRead, BufReader};
 
@@ -30,11 +31,11 @@ pub fn parse_word_list(filepath: &String) -> Result<Vec<String>, String> {
 }
 
 /// Using wordlist, contacts each URL to see if it exists
-pub fn directory_crawl(url: &String, wordlist: Vec<String>) -> Result<(), String> {
+pub fn directory_crawl(url: &String, wordlist: Vec<String>) -> () {
     info!("Beginning Directory Crawl on '{}'", url);
 
-    for p in wordlist {
-        let page_path: String = p;
+    wordlist.par_iter().for_each(|p| {
+        let page_path: &String = p;
 
         // Strip '/' from beginning of path
         let formatted_path = page_path.strip_prefix("/").unwrap_or(&page_path);
@@ -42,7 +43,5 @@ pub fn directory_crawl(url: &String, wordlist: Vec<String>) -> Result<(), String
         let current_url: String = format!("{}/{}", url, formatted_path);
 
         connectivity_check::query(&current_url);
-    }
-
-    Ok(())
+    });
 }

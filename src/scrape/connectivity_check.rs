@@ -1,5 +1,4 @@
-use futures::{StreamExt, stream};
-use log::{info, warn};
+use log::{debug, info, warn};
 use reqwest::{StatusCode, blocking::Client};
 use std::time::Duration;
 
@@ -37,7 +36,7 @@ pub fn query(url: &str) -> () {
         Ok(response) => {
             let status = response.status();
             if status != StatusCode::OK {
-                warn!("{:<40} {}", url, status);
+                debug!("{:<40} {}", url, status);
             } else {
                 info!("{:<40} Found: {}", url, status);
             }
