@@ -1,3 +1,5 @@
+use futures::{StreamExt, stream};
+use log::{info, warn};
 use reqwest::{StatusCode, blocking::Client};
 use std::time::Duration;
 
@@ -22,4 +24,26 @@ pub fn validate(url: &str) -> Result<(), String> {
             }
         }
     }
+}
+
+/// Helper function to query indvidual
+pub fn query(url: &str) -> () {
+    let client = Client::builder()
+        .timeout(Duration::from_secs(5))
+        .build()
+        .unwrap();
+
+    match client.get(url).send() {
+        Ok(response) => {
+            let status = response.status();
+            if status != StatusCode::OK {
+                warn!("{:<40} {}", url, status);
+            } else {
+                info!("{:<40} Found: {}", url, status);
+            }
+        }
+        Err(err) => warn!("{:<40} {}", url, err),
+    }
+
+    ()
 }

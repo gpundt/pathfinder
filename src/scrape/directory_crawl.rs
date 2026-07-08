@@ -3,6 +3,8 @@ use log::{debug, error, info, trace, warn};
 use std::fs::File;
 use std::io::{BufRead, BufReader};
 
+const MAX_CONCURRENT_REQUESTS: usize = 5;
+
 /// Given a filepath, parse each line and populate wordlist Vec<String>
 pub fn parse_word_list(filepath: &String) -> Result<Vec<String>, String> {
     let file = match File::open(filepath) {
@@ -39,10 +41,7 @@ pub fn directory_crawl(url: &String, wordlist: Vec<String>) -> Result<(), String
 
         let current_url: String = format!("{}/{}", url, formatted_path);
 
-        match connectivity_check::validate(&current_url) {
-            Ok(_) => info!("{:<40} Found", current_url),
-            Err(err) => warn!("{:<40} {}", current_url, err),
-        }
+        connectivity_check::query(&current_url);
     }
 
     Ok(())
