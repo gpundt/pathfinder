@@ -3,6 +3,7 @@ use log::{debug, error, info, trace, warn};
 use std::fs::File;
 use std::io::{BufRead, BufReader};
 
+/// Given a filepath, parse each line and populate wordlist Vec<String>
 pub fn parse_word_list(filepath: &String) -> Result<Vec<String>, String> {
     let file = match File::open(filepath) {
         Ok(file) => file,
